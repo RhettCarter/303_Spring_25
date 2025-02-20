@@ -1,32 +1,18 @@
-def encode(input, shift):
+def encode(input_text, shift):
     letters = list('abcdefghijklmnopqrstuvwxyz')
 
-    encode_text = []
+    code = [letters[(i + shift) % 26] for i in range(26)]
 
-    for char in input:
-        if char.islower():
-            index = letters.index(char)
-            new_index = (index + shift) % 26
-            encode_text.append(letters[new_index])
-        else:
-            encode_text.append(char)
-    encode_text = ''.join(encode_text)
-    return letters, encode_text
+    return (letters, code)
 
-def decode(input, shift):
+def decode(input_text, shift):
     letters = list('abcdefghijklmnopqrstuvwxyz')
+    decode = [letters[(i - shift) % 26] for i in range(26)]
+    decode_dictionary = dict(zip(decode, letters))
 
-    decode_text = []
+    decoded_message = ''.join([decode_dictionary[char] if char in decode_dictionary else char for char in input_text])
 
-    for char in input:
-        if char.islower():
-            index = letters.index(char)
-            new_index = (index - shift) % 26
-            decode_text.append(letters[new_index])
-        else: decode_text.append(char)
-    decode_text = ''.join(decode_text)
-    return decode_text
-
+    return decoded_message
 
 import datetime
 
@@ -79,3 +65,4 @@ class CheckingAccount(BankAccount):
             print(f"Overdrafts are permitted, but incur a $30 fee each time a withdrawal results in a negative balance. New balance: ${self.balance}")
         else:
             super().withdraw(amount)
+
